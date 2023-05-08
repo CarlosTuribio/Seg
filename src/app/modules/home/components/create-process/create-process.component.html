@@ -1,0 +1,134 @@
+<ul aria-expanded="false" id="add" class="sub-menu collapsed collapse in">
+  <li>
+    <b style="font-size: 15px">C</b>riar <b style="font-size: 15px">P</b>rocesso
+  </li>
+  <div style="background: rgb(218, 218, 218)">
+    <div style="text-align: center">
+      <label for="checkGerador"
+        ><input type="checkbox" id="checkbox" name="checkbox" /> Gerar processo
+        com valores aleatórios?
+      </label>
+    </div>
+  </div>
+  <div>
+    <div class="">
+      <input
+        placeholder="Processo:"
+        type="text"
+        required="required"
+        id="processo"
+        name="processo"
+        maxlength="1"
+        class="form-control"
+        style="text-transform: capitalize"
+        [(ngModel)]="processName"
+      />
+    </div>
+    <div class="">
+      <input
+        placeholder="Código:"
+        type="number"
+        required="required"
+        id="codigo"
+        name="codigo"
+        min="1"
+        maxlength="1"
+        class="form-control"
+        [(ngModel)]="codeNumber"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        placeholder="Dados:"
+        type="number"
+        min="1"
+        required="required"
+        id="dado"
+        name="dado"
+        class="form-control"
+        [(ngModel)]="dataNumber"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        placeholder="Pilha:"
+        type="number"
+        min="1"
+        required="required"
+        id="pilha"
+        name="pilha"
+        class="form-control"
+        [(ngModel)]="stackNumber"
+      />
+    </div>
+    <div id="botoes" style="text-align: center">
+      <button type="submit" (click)="submitProcess()" class="btn btn-success">
+        Cadastrar
+      </button>
+      <button type="reset" class="btn btn-danger">Cancelar</button>
+    </div>
+  </div>
+</ul>
+
+<ul aria-expanded="true" id="add3" class="sub-menu collapsed collapse in 2">
+  <li
+    id="ListaProcessos"
+    data-toggle="collapse"
+    data-target="#add2"
+    aria-expanded="false"
+    class="active collapsed"
+  >
+    <b style="font-size: 15px">L</b>istas de
+    <b style="font-size: 15px">P</b>rocessos
+  </li>
+  <div id="add2" class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div *ngFor=" let item of processes; let i = index" class="card-body">
+          <span item="[object Object]"
+            ><button
+              class="btn btn-secondary btn-sm distancia-botao-processos"
+              style="font-weight: bold; text-decoration: underline"
+            >
+            {{item.id}} - {{item.name}}</button
+            ><button (click)='removeProcess(i)'
+              class="glyphicon glyphicon-remove-sign btn btn-danger"
+            >X</button
+            ><br
+          /></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ul>
+
+
+<!---->
+<!---->
+
+
+
+<button type="submit" (click)="show()" class="btn btn-success">
+  show
+</button>
+
+<!---->
+<!---->
+
+
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>adress</th>
+        <th>byte</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor=" let item of tableMemory; let i = index">
+        <td >{{item[0]}}</td>
+        <td >{{item[1]}}</td>
+    </tbody>
+  </table>
+</div>
+
