@@ -8,26 +8,32 @@ import { PhysicalMemory } from '../../model/physical-memory';
 })
 export class CreateProcessComponent implements OnInit {
   @Output() public emmitProcess = new EventEmitter();
-  public processes: Array<{ id: number; name: string }> = [];
+  public processes: Array<{
+    id: number;
+    name: string;
+    data: Array<Array<any>>;
+  }> = [];
   public countProcess: number = 0;
 
-  public colors: string[][] = [
-    ["", "#E6B0AA", "#D98880", "#CD6155"],
-    ["", "#D7BDE2", "#AF7AC5", "#76448A"],
-    ["", "#A9CCE3", "#5499C7", "#1A5276"],
-    ["", "#A3E4D7", "#48C9B0", "#1E8449"],
-    ["", "#ABEBC6", "#58D68D", "#239B56"],
-    ["", "#F9E79F", "#F4D03F", "#B7950B"],
-    ["", "#F5CBA7", "#EB984E", "#AF601A"],
-    ["", "#EDBB99", "#DC7633", "#784212"],
-    ["", "#D2B4DE", "#BB8FCE", "#6A5ACD"],
-    ["", "#A9DFBF", "#27AE60", "#1E8449"]
+
+  public colors: any = [
+    ['', '#E6B0AA', '#D98880', '#CD6155'],
+    ['', '#D7BDE2', '#AF7AC5', '#76448A'],
+    ['', '#A9CCE3', '#5499C7', '#1A5276'],
+    ['', '#A3E4D7', '#48C9B0', '#1E8449'],
+    ['', '#ABEBC6', '#58D68D', '#239B56'],
+    ['', '#F9E79F', '#F4D03F', '#B7950B'],
+    ['', '#F5CBA7', '#EB984E', '#AF601A'],
+    ['', '#EDBB99', '#DC7633', '#784212'],
+    ['', '#D2B4DE', '#BB8FCE', '#6A5ACD'],
+    ['', '#A9DFBF', '#27AE60', '#1E8449'],
   ];
-  
+
   public processName: string = '';
-  public codeNumber: number = 0;
-  public dataNumber: number = 0;
-  public stackNumber: number = 0;
+  public codeNumber: number = NaN;
+  public dataNumber: number = NaN;
+  public stackNumber: number = NaN;
+  public checkboxChecked: boolean = false;
 
   public NumberTemp1: number = 0;
   public NumberTemp2: number = 0;
@@ -212,6 +218,12 @@ export class CreateProcessComponent implements OnInit {
     }
     console.log('tableMemory: ');
     console.log(this.tableMemory);
+
+    console.log('Processos: ');
+    console.log(this.processes);
+
+    console.log('Colors: ');
+    console.log(this.colors);
   }
 
   public orderSegments() {
@@ -245,6 +257,19 @@ export class CreateProcessComponent implements OnInit {
       }
     }
     return seg;
+  }
+
+  public showProcess(processName: string) {
+    let element = document.getElementById('contain-' + processName);
+    for (let i in this.processes) {
+      let z = document.getElementById('contain-' + this.processes[i].name);
+      if (z) {
+        z.style.display = 'none';
+      }
+    }
+    if (element) {
+      element.style.display = 'flex';
+    }
   }
 
   public inserirSegmentos(processName: string) {
@@ -351,6 +376,122 @@ export class CreateProcessComponent implements OnInit {
     this.tabelaLacunas.sort((a: any, b: any) => a[2] - b[2]);
   }
 
+  public decimalToBinary(decimal: number): string {
+    let binary = '';
+
+    while (decimal > 0) {
+      binary = (decimal % 2) + binary;
+      decimal = Math.floor(decimal / 2);
+    }
+
+    while (binary.length < 5) {
+      binary = '0' + binary;
+    }
+
+    return binary;
+  }
+
+  public getAdress(segCode: String) {
+    for (let i in this.tableMemory) {
+      if (this.tableMemory[i][2] === segCode) {
+        return this.tableMemory[i][0];
+      }
+    }
+  }
+
+  public removeColor(processName: String) {
+    for (let i in this.colors) {
+      if (this.colors[i][0] === processName) {
+        this.colors[i][0] = '';
+        break;
+      }
+    }
+  }
+
+  public setColor(processName: String) {
+    for (let i in this.colors) {
+      if (this.colors[i][0] === '') {
+        this.colors[i][0] = processName;
+        break;
+      }
+    }
+  }
+
+  public whatColor(code: String) {
+    for (let i in this.colors) {
+      if (this.colors[i][0] === code[0]) {
+        if (code[1] === 'C') {
+          return this.colors[i][3];
+        }
+        if (code[1] === 'D') {
+          return this.colors[i][2];
+        }
+        if (code[1] === 'P') {
+          return this.colors[i][1];
+        }
+      }
+    }
+  }
+
+  randonNumbers(checked: boolean) {
+    this.checkboxChecked = checked;
+    console.log(this.checkboxChecked);
+
+    if (this.checkboxChecked) {
+      this.codeNumber = Math.floor(Math.random() * 4) + 1;
+      this.dataNumber = Math.floor(Math.random() * 4) + 1;
+      this.stackNumber = Math.floor(Math.random() * 4) + 1;
+    } else {
+      this.codeNumber = NaN;
+      this.dataNumber = NaN;
+      this.stackNumber = NaN;
+    }
+  }
+
+  public tables() {
+    this.setColor(this.processName);
+    let data = [];
+    let temprray = [];
+    let temp = [];
+
+    temprray.push('00');
+    temprray.push(this.getAdress(this.processName + 'C'));
+    temprray.push(this.decimalToBinary(this.codeNumber));
+    temp.push(temprray);
+    temprray = [];
+    temprray.push('00');
+    temprray.push(this.getAdress(this.processName + 'D'));
+    temprray.push(this.decimalToBinary(this.codeNumber));
+    temp.push(temprray);
+    temprray = [];
+    temprray.push('00');
+    temprray.push(this.getAdress(this.processName + 'P'));
+    temprray.push(this.decimalToBinary(this.codeNumber));
+    temp.push(temprray);
+    data.push(temp);
+    temprray = [];
+
+    for (let i = 0; i < this.codeNumber; i++) {
+      temprray.push([this.decimalToBinary(i), 'C' + (i + 1)]);
+    }
+    data.push(temprray);
+    console.log(temprray);
+    temprray = [];
+    for (let i = 0; i < this.dataNumber; i++) {
+      temprray.push([this.decimalToBinary(i), 'D' + (i + 1)]);
+    }
+    data.push(temprray);
+    console.log(temprray);
+    temprray = [];
+    for (let i = 0; i < this.stackNumber; i++) {
+      temprray.push([this.decimalToBinary(i), 'P' + (i + 1)]);
+    }
+    data.push(temprray);
+    console.log(temprray);
+    console.log('tchanran');
+    return data;
+  }
+
   public async criar(processName: string) {
     this.reorder();
     const sortedNumbers = [
@@ -382,6 +523,7 @@ export class CreateProcessComponent implements OnInit {
       }
     }
     this.createLacuna(lacuna);
+    this.removeColor(name);
   }
 
   public createLacuna(lacuna: any) {
@@ -426,7 +568,11 @@ export class CreateProcessComponent implements OnInit {
       console.log('testado');
       this.sync();
       if (await retorno) {
-        this.processes.push({ id: this.countProcess, name: this.processName });
+        this.processes.push({
+          id: this.countProcess,
+          name: this.processName,
+          data: this.tables(),
+        });
         this.countProcess++;
         console.log('Adicionado com sucesso!');
       } else {
