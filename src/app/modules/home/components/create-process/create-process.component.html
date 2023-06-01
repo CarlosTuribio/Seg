@@ -26,7 +26,7 @@
             <div style="background: rgb(218, 218, 218)">
               <div style="text-align: center">
                 <label for="checkGerador"
-                  ><input type="checkbox" id="checkbox" name="checkbox" [(ngModel)]="checkboxChecked" (ngModelChange)="randonNumbers($event.target.checked)"/>
+                  ><input type="checkbox" id="checkbox" name="checkbox" [(ngModel)]="checkboxChecked" (change)="randonNumbers()"/>
                   Gerar
                   processo com valores aleatórios?
                   <!----></label

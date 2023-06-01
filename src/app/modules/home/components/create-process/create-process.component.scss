@@ -22,10 +22,7 @@ label {
 }
 
 .nav-side-menu {
-  overflow: auto;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 40px;
-  font-weight: 200;
   background-color: white;
   max-width: 390px;
   height: 100%;
@@ -724,6 +721,7 @@ html {
 //meu
 
 .nav-side-menu{
+  height: 100vh;
   width: 25%;
 }
 .center{
@@ -731,7 +729,7 @@ html {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
 }
 .tables, .process{
   display: flex;
@@ -742,7 +740,7 @@ html {
 .shoubtn, .process{
   width: 100%;
 }
-.center-l, .center-r, .tablesL, .tablesR{
+.tablesL, .tablesR{
   width: 50%;
   
 }
@@ -752,3 +750,21 @@ html {
   display: flex;
 }
 
+.center-l .tablesL, .center-l .tablesR{
+  max-width: 250px;
+} 
+
+.card{
+  min-height: 80px;
+}
+
+.center-l{
+  width: 33%;
+} 
+.center-r{
+  width: 66%;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+}

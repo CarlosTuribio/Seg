@@ -224,6 +224,10 @@ export class CreateProcessComponent implements OnInit {
 
     console.log('Colors: ');
     console.log(this.colors);
+
+    
+    console.log('checkbox: ');
+    console.log(this.checkboxChecked);
   }
 
   public orderSegments() {
@@ -433,18 +437,75 @@ export class CreateProcessComponent implements OnInit {
     }
   }
 
-  randonNumbers(checked: boolean) {
-    this.checkboxChecked = checked;
-    console.log(this.checkboxChecked);
+  public randonChar(): string {
+    let letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let indice = Math.floor(Math.random() * letras.length);
 
+    for(let i in this.processes){
+      if(letras.charAt(indice) === this.processes[i].name){
+        return this.randonChar();
+      }
+    }
+    return letras.charAt(indice);
+  }
+
+  public tornarInputSomenteLeitura(): void {
+    let inputElement = document.getElementById("processo") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = true;
+    }
+    inputElement = document.getElementById("codigo") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = true;
+    }
+    inputElement = document.getElementById("dado") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = true;
+    }
+    inputElement = document.getElementById("pilha") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = true;
+    }
+  }
+
+  public liberarEdicao(): void {
+    let inputElement = document.getElementById("processo") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = false;
+    }
+    inputElement = document.getElementById("codigo") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = false;
+    }
+    inputElement = document.getElementById("dado") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = false;
+    }
+    inputElement = document.getElementById("pilha") as HTMLInputElement;
+    if (inputElement) {
+      inputElement.readOnly = false;
+    }
+  }
+    
+  public resetFields(){
+    this.checkboxChecked = false;
+    this.processName = "";
+    this.codeNumber = NaN;
+    this.dataNumber = NaN;
+    this.stackNumber = NaN;
+    this.liberarEdicao();
+  }
+
+  randonNumbers() {
+    console.log(this.checkboxChecked);
     if (this.checkboxChecked) {
+      this.processName = this.randonChar();
       this.codeNumber = Math.floor(Math.random() * 4) + 1;
       this.dataNumber = Math.floor(Math.random() * 4) + 1;
       this.stackNumber = Math.floor(Math.random() * 4) + 1;
+      this.tornarInputSomenteLeitura();
     } else {
-      this.codeNumber = NaN;
-      this.dataNumber = NaN;
-      this.stackNumber = NaN;
+      this.resetFields()
     }
   }
 
@@ -525,6 +586,33 @@ export class CreateProcessComponent implements OnInit {
     this.createLacuna(lacuna);
     this.removeColor(name);
   }
+  
+  public mergeLacunas() {
+    let lacunasOrdenadas = this.tabelaLacunas.sort((a: [number, number, number], b: [number, number, number]) => a[0] - b[0]);
+    let lacunasUnificadas: [number, number, number][] = [];
+  
+    for (let i = 0; i < lacunasOrdenadas.length; i++) {
+      let lacuna = lacunasOrdenadas[i];
+  
+      if (lacunasUnificadas.length === 0) {
+        lacunasUnificadas.push(lacuna);
+      } else {
+        let ultimaLacunaUnificada = lacunasUnificadas[lacunasUnificadas.length - 1];
+  
+        if (lacuna[0] <= ultimaLacunaUnificada[1] + 1) {
+          ultimaLacunaUnificada[1] = lacuna[1];
+          ultimaLacunaUnificada[2] = ultimaLacunaUnificada[1] - ultimaLacunaUnificada[0] + 1;
+        } else {
+          lacunasUnificadas.push(lacuna);
+        }
+      }
+    }
+  
+    this.tabelaLacunas = lacunasUnificadas;
+  }
+  
+  
+  
 
   public createLacuna(lacuna: any) {
     this.tabelaLacunas.push([
@@ -548,6 +636,7 @@ export class CreateProcessComponent implements OnInit {
         }
       }
     }
+    this.mergeLacunas()
     this.reorder();
     this.sync();
   }
@@ -557,13 +646,19 @@ export class CreateProcessComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {}
 
+  public validInput(){
+    if(this.processName !== "" && this.codeNumber >0  && this.dataNumber >0  && this.stackNumber >0 ){return true}
+    else return false
+  }
+
   public async submitProcess() {
     this.sync();
     this.processName = this.processName.toUpperCase();
-    const exists = this.processes.some(
+    let exists = this.processes.some(
       (process) => process.name === this.processName
     );
-    if (!exists) {
+    this.validInput();
+    if (!exists && this.validInput()) {
       let retorno = this.criar(this.processName);
       console.log('testado');
       this.sync();
@@ -575,11 +670,16 @@ export class CreateProcessComponent implements OnInit {
         });
         this.countProcess++;
         console.log('Adicionado com sucesso!');
+        this.resetFields()
       } else {
         console.log('Memóra cheia!!');
       }
     } else {
-      console.log('Já existe um processo com esse nome!!');
+      if (exists){
+        console.log('Já existe um processo com esse nome!!');}
+        else{
+          console.log('Preencha todos os campos!!');}
+
     }
   }
 
