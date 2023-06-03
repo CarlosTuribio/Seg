@@ -1,17 +1,9 @@
 <div class="content">
   <div class="nav-side-menu">
-    <i
-      data-toggle=""
-      data-target="#menu-content"
-      class="fa fa-bars fa-2x toggle-btn"
-    ></i>
     <div class="menu-list">
       <ul id="menu-content" class="menu-content out">
         <li data-target="#add, #add3" aria-controls="add add3" class="active">
-          <a
-            ><i class="glyphicon glyphicon-cog"></i
-            ><b style="font-size: 17px">Área de Configuração</b></a
-          >
+          <a><b>Área de Configuração</b></a>
         </li>
         <ul aria-expanded="false" id="add" class="sub-menu in">
           <li
@@ -20,25 +12,30 @@
             aria-expanded="false"
             class="active"
           >
-            <b style="font-size: 15px">Criar Processo</b>
+            <b>Criar Processo</b>
           </li>
           <form id="add1">
             <div style="background: rgb(218, 218, 218)">
-              <div style="text-align: center">
+              <div style="text-align: left; margin-left: 15px">
                 <label for="checkGerador"
-                  ><input type="checkbox" id="checkbox" name="checkbox" [(ngModel)]="checkboxChecked" (change)="randonNumbers()"/>
-                  Gerar
-                  processo com valores aleatórios?
+                  ><input
+                    type="checkbox"
+                    id="checkbox"
+                    name="checkbox"
+                    [(ngModel)]="checkboxChecked"
+                    (change)="randonNumbers()"
+                  />
+                  Gerar processo com valores aleatórios?
                   <!----></label
                 >
               </div>
             </div>
-            <div>
+            <div style="padding: 10px 16px 10px 16px">
               <div class="form-group">
                 <input
-                  placeholder="Processo:"
+                  placeholder="Processo*:"
                   type="text"
-                  required="required"
+                  required
                   id="processo"
                   name="processo"
                   maxlength="1"
@@ -49,9 +46,9 @@
               </div>
               <div class="form-group">
                 <input
-                  placeholder="Código:"
+                  placeholder="Código*:"
                   type="number"
-                  required="required"
+                  required
                   id="codigo"
                   name="codigo"
                   min="1"
@@ -62,10 +59,10 @@
               </div>
               <div class="form-group">
                 <input
-                  placeholder="Dados:"
+                  placeholder="Dados*:"
                   type="number"
                   min="1"
-                  required="required"
+                  required
                   id="dado"
                   name="dado"
                   class="form-control"
@@ -74,10 +71,10 @@
               </div>
               <div class="form-group">
                 <input
-                  placeholder="Pilha:"
+                  placeholder="Pilha*:"
                   type="number"
                   min="1"
-                  required="required"
+                  required
                   id="pilha"
                   name="pilha"
                   class="form-control"
@@ -106,7 +103,7 @@
             aria-expanded="false"
             class="active"
           >
-            <b style="font-size: 15px">Lista de Processos</b>
+            <b>Lista de Processos</b>
           </li>
           <div id="add2" class="row">
             <div class="col-lg-12">
@@ -116,9 +113,12 @@
                   class="card-body"
                 >
                   <span item="[object Object]"
-                    ><button id="btn-lat-{{ item.name }}"
+                    ><button
+                      id="btn-lat-{{ item.name }}"
                       (click)="showProcess(item.name)"
-                      class="btn btn-secondary btn-sm distancia-botao-processos"
+                      class="process-{{
+                        i
+                      }} btn btn-secondary btn-sm distancia-botao-processos"
                       style="font-weight: bold"
                     >
                       {{ item.name }}</button
@@ -139,18 +139,36 @@
   </div>
 
   <div class="center">
-    <div class="title">
-      <h1 class="htitle">Simulador de Gerenciamento de Memória por Segmentação</h1>
+    <div class="title-pag" style="width: 100%">
+      <h1 class="htitle">
+        Simulador de Gerenciamento de Memória com Segmentação
+      </h1>
+      <img class="i icon"
+        (click)="showPopup(4)"
+        src="/assets/info.png"
+        alt="Ícone"
+        width="24"
+        height="24"
+        style="vertical-align: middle"
+      />
     </div>
-    <button hidden type="submit" (click)="show()" class="btn btn-success shoubtn">
+    <button
+      hidden
+      type="submit"
+      (click)="show()"
+      class="btn btn-success shoubtn"
+    >
       show
     </button>
     <div class="process">
       <div class="proces" *ngFor="let item of processes; let i = index">
         <span item="[object Object]"
-          ><button id="btn-top-{{ item.name }}"
+          ><button
+            id="btn-top-{{ item.name }}"
             (click)="showProcess(item.name)"
-            class="btn btn-secondary btn-sm distancia-botao-processos"
+            class="process-{{
+              i
+            }} btn btn-secondary btn-sm distancia-botao-processos"
           >
             {{ item.name }}
           </button></span
@@ -159,12 +177,25 @@
     </div>
 
     <div class="center-l">
-      <span>batat</span>
       <div class="contain" *ngFor="let item of processes; let i = index">
-        <div id="contain-{{ item.name }}" class="table{{i}} tables left-page process-btns">
+        <div
+          id="contain-{{ item.name }}"
+          class="table{{ i }} tables left-page process-btns"
+        >
           <div class="tablesL pr-1">
             <span
-              ><h4>Segmento 00 - Código</h4>
+              ><div class="title-pag">
+                <h4 class="title-center-b">Memória Lógica</h4>
+                <img class="i icon"
+                  (click)="showPopup(5)"
+                  src="/assets/info.png"
+                  alt="Ícone"
+                  width="24"
+                  height="24"
+                  style="vertical-align: middle"
+                />
+              </div>
+              <h4 style="margin-top: 30px">Segmento 00 - Código</h4>
               <table class="table table-borderless table-memoria-fisica">
                 <thead>
                   <tr>
@@ -224,7 +255,17 @@
             >
           </div>
           <div class="tablesR pl-1">
-            <h4>Tabela de Segmentos</h4>
+            <div class="title-pag">
+              <h4 class="title-center-b">Tabela de Segmentos</h4>
+              <img class="i icon"
+                (click)="showPopup(6)"
+                src="/assets/info.png"
+                alt="Ícone"
+                width="24"
+                height="24"
+                style="vertical-align: middle"
+              />
+            </div>
             <span
               ><table class="table table-borderless table-memoria-fisica">
                 <thead>
@@ -273,13 +314,24 @@
       </div>
     </div>
     <div class="center-r">
+      <div class="title-pag">
+        <h4 class="title-center-b">Memória Física</h4>
+        <img class="i icon"
+          (click)="showPopup(7)"
+          src="/assets/info.png"
+          alt="Ícone"
+          width="24"
+          height="24"
+          style="vertical-align: middle"
+        />
+      </div>
       <div class="tables">
         <div class="tablesL">
           <table class="table table-borderless table-memoria-fisica">
             <thead>
               <tr bgColor="fff">
-                <th>adress</th>
-                <th>byte</th>
+                <th>Adress</th>
+                <th>Byte</th>
               </tr>
             </thead>
             <tbody>
@@ -298,8 +350,8 @@
           <table class="table table-borderless table-memoria-fisica">
             <thead>
               <tr bgColor="fff">
-                <th>adress</th>
-                <th>byte</th>
+                <th>Adress</th>
+                <th>Byte</th>
               </tr>
             </thead>
             <tbody>
@@ -316,5 +368,17 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div id="popup">
+  <div class="back" (click)="closePopup()"></div>
+  <div class="pop-body">
+    <span class="spbtn"
+      ><button id="popup-close" (click)="closePopup()" class="btn btn-danger">
+        X
+      </button></span
+    >
+    <h1 id="popup-title">{{ popTitle }}</h1>
+    <span id="popup-message">{{ popMessage }}</span>
   </div>
 </div>

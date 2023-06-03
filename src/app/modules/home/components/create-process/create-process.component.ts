@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { PhysicalMemory } from '../../model/physical-memory';
 
 @Component({
   selector: 'app-create-process',
@@ -7,24 +6,18 @@ import { PhysicalMemory } from '../../model/physical-memory';
   styleUrls: ['./create-process.component.scss'],
 })
 export class CreateProcessComponent implements OnInit {
-  @Output() public emmitProcess = new EventEmitter();
+  
+  @Output() public enviarDados = new EventEmitter();
+
+  constructor() {}
+  ngOnInit(): void {}
+
   public processes: Array<{
     id: number;
     name: string;
     data: Array<Array<any>>;
   }> = [];
   public countProcess: number = 0;
-
-  public colors: any = [
-    ['', '#5CAAD6', '#0780A7', '#035473'],
-    ['', '#AFA4B1', '#785964', '#4D394E'],
-    ['', '#E99D9F', '#bf565c', '#8E3A40'],
-    ['', '#77AFA5', '#4B706A', '#224B45'],
-    ['', '#EDBB99', '#DC7633', '#784212'],
-    ['', '#D2B4DE', '#BB8FCE', '#6A5ACD'],
-    ['', '#D8C0A9', '#B2927C', '#7E6754'],
-    ['', '#D3D3D3', '#A9A9A9', '#808080'],
-  ];
 
   public processName: string = '';
   public codeNumber: number = NaN;
@@ -36,7 +29,23 @@ export class CreateProcessComponent implements OnInit {
   public NumberTemp2: number = 0;
   public NumberTemp3: number = 0;
 
-  public
+  
+  public popTitle: string = '';
+  public popMessage: string = '';
+
+  public tabelaLacunas: any = [[0, 31, 32]];
+
+
+  public colors: any = [
+    ['', '#5CAAD6', '#0780A7', '#035473'],
+    ['', '#AFA4B1', '#785964', '#4D394E'],
+    ['', '#E99D9F', '#bf565c', '#8E3A40'],
+    ['', '#77AFA5', '#4B706A', '#224B45'],
+    ['', '#EDBB99', '#DC7633', '#784212'],
+    ['', '#D2B4DE', '#BB8FCE', '#6A5ACD'],
+    ['', '#D8C0A9', '#B2927C', '#7E6754'],
+    ['', '#D3D3D3', '#A9A9A9', '#808080'],
+  ];
 
   public tableMemoryTemp: any = [
     ['00000', '', ''],
@@ -73,9 +82,6 @@ export class CreateProcessComponent implements OnInit {
     ['11111', '', ''],
   ];
 
-  public tabelaLacunas: any = [[0, 31, 32]];
-  //public tabelaLacunas: any = [[6, 11, 6], [18, 31, 14]];
-
   public tableMemory: any = [
     ['00000', '', ''],
     ['00001', '', ''],
@@ -111,29 +117,57 @@ export class CreateProcessComponent implements OnInit {
     ['11111', '', ''],
   ];
 
-  public fillLacunaTemp(tabelaLacunasTemp: any, lacunaPosi: any, fill: number) {
-    if (tabelaLacunasTemp[lacunaPosi][2] === fill) {
-      tabelaLacunasTemp.splice(lacunaPosi, 1);
+  public async submitProcess() {
+    this.sync();
+    this.processName = this.processName.toUpperCase();
+    let exists = this.processes.some(
+      (process) => process.name === this.processName
+    );
+    this.validInput();
+    if (!exists && this.validInput()) {
+      let retorno = this.criar(this.processName);
+      this.sync();
+      if (await retorno) {
+        this.processes.push({
+          id: this.countProcess,
+          name: this.processName,
+          data: this.tables(),
+        });
+        this.countProcess++;
+        this.resetFields();
+      } else {
+        this.showPopup(1);
+      }
     } else {
-      tabelaLacunasTemp[lacunaPosi][0] =
-        tabelaLacunasTemp[lacunaPosi][0] + fill;
-      tabelaLacunasTemp[lacunaPosi][2] =
-        tabelaLacunasTemp[lacunaPosi][1] - tabelaLacunasTemp[lacunaPosi][0] + 1;
-    }
-    tabelaLacunasTemp.sort((a: any, b: any) => a[2] - b[2]);
-    return tabelaLacunasTemp;
-  }
-
-  public insertMemoryTemp(
-    key: string,
-    fill: number,
-    initialPosition: number
-  ): void {
-    for (let i = 0; i < fill; i++) {
-      this.tableMemoryTemp[initialPosition + i][1] = key + (i + 1);
+      if (exists) {
+        this.showPopup(2);
+      } else {
+        this.showPopup(3);
+      }
     }
   }
 
+  public async criar(processName: string) {
+    this.reorder();
+    const sortedNumbers = [
+      this.codeNumber,
+      this.dataNumber,
+      this.stackNumber,
+    ].sort((a, b) => a - b);
+
+    this.NumberTemp1 = sortedNumbers[0];
+    this.NumberTemp2 = sortedNumbers[1];
+    this.NumberTemp3 = sortedNumbers[2];
+
+    if ((await this.inserirSegmentosTemp()) === 3) {
+      this.inserirSegmentos(processName);
+      this.sync();
+      return true;
+    } else {
+      return false;
+    }
+  }
+    
   public async inserirSegmentosTemp() {
     let count = 0;
     let tabelaLacunasTemp: any[][] = [];
@@ -201,6 +235,29 @@ export class CreateProcessComponent implements OnInit {
     tabelaLacunasTemp = [];
     return count;
   }
+  
+  public insertMemoryTemp(
+    key: string,
+    fill: number,
+    initialPosition: number
+  ): void {
+    for (let i = 0; i < fill; i++) {
+      this.tableMemoryTemp[initialPosition + i][1] = key + (i + 1);
+    }
+  }
+
+  public fillLacunaTemp(tabelaLacunasTemp: any, lacunaPosi: any, fill: number) {
+    if (tabelaLacunasTemp[lacunaPosi][2] === fill) {
+      tabelaLacunasTemp.splice(lacunaPosi, 1);
+    } else {
+      tabelaLacunasTemp[lacunaPosi][0] =
+        tabelaLacunasTemp[lacunaPosi][0] + fill;
+      tabelaLacunasTemp[lacunaPosi][2] =
+        tabelaLacunasTemp[lacunaPosi][1] - tabelaLacunasTemp[lacunaPosi][0] + 1;
+    }
+    tabelaLacunasTemp.sort((a: any, b: any) => a[2] - b[2]);
+    return tabelaLacunasTemp;
+  }
 
   public show() {
     console.log('Segments: ');
@@ -261,6 +318,13 @@ export class CreateProcessComponent implements OnInit {
     return seg;
   }
 
+  public closePopup() {
+    let element = document.getElementById('popup');
+    if (element) {
+      element.style.display = 'none';
+    }
+  }
+
   public showProcess(processName: string) {
     let element = document.getElementById('contain-' + processName);
     for (let i in this.processes) {
@@ -274,28 +338,27 @@ export class CreateProcessComponent implements OnInit {
     }
 
     for (let i in this.processes) {
-      let button = document.getElementById('btn-lat-'+ this.processes[i].name);
+      let button = document.getElementById('btn-lat-' + this.processes[i].name);
       if (button && button.classList.contains('open-process')) {
         button.classList.remove('open-process');
       }
     }
-    let btn = document.getElementById('btn-lat-'+ processName);
+    let btn = document.getElementById('btn-lat-' + processName);
     if (btn) {
-      btn.classList.add("open-process");
+      btn.classList.add('open-process');
     }
 
     for (let i in this.processes) {
-      let button = document.getElementById('btn-top-'+ this.processes[i].name);
+      let button = document.getElementById('btn-top-' + this.processes[i].name);
       if (button && button.classList.contains('open-process')) {
         button.classList.remove('open-process');
       }
     }
 
-    let btn2 = document.getElementById('btn-top-'+ processName);
+    let btn2 = document.getElementById('btn-top-' + processName);
     if (btn2) {
-      btn2.classList.add("open-process");
+      btn2.classList.add('open-process');
     }
-
   }
 
   public inserirSegmentos(processName: string) {
@@ -369,10 +432,6 @@ export class CreateProcessComponent implements OnInit {
     this.tabelaLacunas.sort((a: any, b: any) => a[2] - b[2]);
   }
 
-  public sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   public insertMemory(
     processName: string,
     key: string,
@@ -395,7 +454,6 @@ export class CreateProcessComponent implements OnInit {
       this.tableMemoryTemp.push(temp);
       temp = [];
     }
-    console.log(this.tableMemoryTemp, 'fim');
   }
 
   public reorder() {
@@ -519,7 +577,6 @@ export class CreateProcessComponent implements OnInit {
   }
 
   randonNumbers() {
-    console.log(this.checkboxChecked);
     if (this.checkboxChecked) {
       this.processName = this.randonChar();
       this.codeNumber = Math.floor(Math.random() * 4) + 1;
@@ -558,42 +615,17 @@ export class CreateProcessComponent implements OnInit {
       temprray.push([this.decimalToBinary(i), 'C' + (i + 1)]);
     }
     data.push(temprray);
-    console.log(temprray);
     temprray = [];
     for (let i = 0; i < this.dataNumber; i++) {
       temprray.push([this.decimalToBinary(i), 'D' + (i + 1)]);
     }
     data.push(temprray);
-    console.log(temprray);
     temprray = [];
     for (let i = 0; i < this.stackNumber; i++) {
       temprray.push([this.decimalToBinary(i), 'P' + (i + 1)]);
     }
     data.push(temprray);
-    console.log(temprray);
-    console.log('tchanran');
     return data;
-  }
-
-  public async criar(processName: string) {
-    this.reorder();
-    const sortedNumbers = [
-      this.codeNumber,
-      this.dataNumber,
-      this.stackNumber,
-    ].sort((a, b) => a - b);
-
-    this.NumberTemp1 = sortedNumbers[0];
-    this.NumberTemp2 = sortedNumbers[1];
-    this.NumberTemp3 = sortedNumbers[2];
-
-    if ((await this.inserirSegmentosTemp()) === 3) {
-      this.inserirSegmentos(processName);
-      this.sync();
-      return true;
-    } else {
-      return false;
-    }
   }
 
   public remover(name: string) {
@@ -649,11 +681,6 @@ export class CreateProcessComponent implements OnInit {
     this.sync();
   }
 
-  @Output() public enviarDados = new EventEmitter();
-
-  constructor() {}
-  ngOnInit(): void {}
-
   public validInput() {
     if (
       this.processName !== '' &&
@@ -665,46 +692,44 @@ export class CreateProcessComponent implements OnInit {
     } else return false;
   }
 
-  public async submitProcess() {
-    this.sync();
-    this.processName = this.processName.toUpperCase();
-    let exists = this.processes.some(
-      (process) => process.name === this.processName
-    );
-    this.validInput();
-    if (!exists && this.validInput()) {
-      let retorno = this.criar(this.processName);
-      console.log('testado');
-      this.sync();
-      if (await retorno) {
-        this.processes.push({
-          id: this.countProcess,
-          name: this.processName,
-          data: this.tables(),
-        });
-        this.countProcess++;
-        console.log('Adicionado com sucesso!');
-        this.resetFields();
-      } else {
-        console.log('Memóra cheia!!');
-      }
-    } else {
-      if (exists) {
-        console.log('Já existe um processo com esse nome!!');
-      } else {
-        console.log('Preencha todos os campos!!');
-      }
+  public showPopup(cod: number) {
+    switch (cod) {
+      case 1:
+        this.popTitle = 'Memóra cheia!!';
+        this.popMessage = 'Não existe espaço suficente para a criação do processo.';
+        break;
+      case 2:
+        this.popTitle = 'Já existe um processo com esse nome!!';
+        this.popMessage = 'O processo '+ this.processName +' já foi criado.';
+        break;
+      case 3:
+        this.popTitle = 'Preencha todos os campos!!';
+        this.popMessage = 'Os campos Processo, Código, Dados e Pilha, são obrigatórios.';
+        break;
+      case 4:
+        this.popTitle = 'Gerenciamento de Memória com Segmentação';
+        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        break;
+      case 5:
+        this.popTitle = 'Memória Lógica';
+        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        break;
+      case 6:
+        this.popTitle = 'Tabela de Segmentos';
+        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        break;
+      case 7:
+        this.popTitle = 'Memória Física';
+        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        break;
+    }
+    let element = document.getElementById('popup');
+    if (element) {
+      element.style.display = 'block';
     }
   }
 
   public removeProcess(index: number) {
-    console.log(
-      this.processName,
-      this.codeNumber,
-      this.dataNumber,
-      this.stackNumber
-    );
-
     this.remover(this.processes[index].name);
     this.processes.splice(index, 1);
   }
