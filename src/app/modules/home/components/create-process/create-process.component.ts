@@ -695,7 +695,7 @@ export class CreateProcessComponent implements OnInit {
   public showPopup(cod: number) {
     switch (cod) {
       case 1:
-        this.popTitle = 'Memóra cheia!!';
+        this.popTitle = 'Memória cheia!!';
         this.popMessage = 'Não existe espaço suficente para a criação do processo.';
         break;
       case 2:
