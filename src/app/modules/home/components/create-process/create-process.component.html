@@ -116,7 +116,7 @@
                   class="card-body"
                 >
                   <span item="[object Object]"
-                    ><button
+                    ><button id="btn-lat-{{ item.name }}"
                       (click)="showProcess(item.name)"
                       class="btn btn-secondary btn-sm distancia-botao-processos"
                       style="font-weight: bold"
@@ -139,13 +139,16 @@
   </div>
 
   <div class="center">
-    <button type="submit" (click)="show()" class="btn btn-success shoubtn">
+    <div class="title">
+      <h1 class="htitle">Simulador de Gerenciamento de Memória por Segmentação</h1>
+    </div>
+    <button hidden type="submit" (click)="show()" class="btn btn-success shoubtn">
       show
     </button>
     <div class="process">
       <div class="proces" *ngFor="let item of processes; let i = index">
         <span item="[object Object]"
-          ><button
+          ><button id="btn-top-{{ item.name }}"
             (click)="showProcess(item.name)"
             class="btn btn-secondary btn-sm distancia-botao-processos"
           >

@@ -722,7 +722,25 @@ html {
 
 .nav-side-menu{
   height: 100vh;
-  width: 25%;
+  width: 25%; &::after {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -15px;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      background-color: lightblue;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  
+    /* Define a seta como invisível */
+    &.collapsed::after {
+      display: none;
+    }
+  }
 }
 .center{
   width: 75%;
@@ -730,8 +748,10 @@ html {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-around;
+  align-content: flex-start;
+  margin:auto;
 }
-.tables, .process{
+.tables{
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -740,11 +760,19 @@ html {
 .shoubtn, .process{
   width: 100%;
 }
+.process{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  min-height: 34px;
+}
 .tablesL, .tablesR{
   width: 50%;
   
 }
-
+.tablesL{
+  padding-right: 10px;
+}
 .left-page{display: none;}
 .table0 {
   display: flex;
@@ -759,12 +787,17 @@ html {
 }
 
 .center-l{
-  width: 33%;
+  width: 35%;
 } 
 .center-r{
-  width: 66%;
+  width: 65%;
 }
 html, body {
   margin: 0;
   padding: 0;
+}
+.btn.open-process{
+  color: var(--bs-btn-hover-color);
+  background-color: var(--bs-btn-hover-bg);
+  border-color: var(--bs-btn-hover-border-color);
 }
