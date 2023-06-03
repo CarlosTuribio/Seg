@@ -16,16 +16,14 @@ export class CreateProcessComponent implements OnInit {
   public countProcess: number = 0;
 
   public colors: any = [
-    ['', '#E6B0AA', '#D98880', '#CD6155'],
-    ['', '#D7BDE2', '#AF7AC5', '#76448A'],
-    ['', '#A9CCE3', '#5499C7', '#1A5276'],
-    ['', '#A3E4D7', '#48C9B0', '#1E8449'],
-    ['', '#ABEBC6', '#58D68D', '#239B56'],
-    ['', '#F9E79F', '#F4D03F', '#B7950B'],
-    ['', '#F5CBA7', '#EB984E', '#AF601A'],
+    ['', '#5CAAD6', '#0780A7', '#035473'],
+    ['', '#AFA4B1', '#785964', '#4D394E'],
+    ['', '#E99D9F', '#bf565c', '#8E3A40'],
+    ['', '#77AFA5', '#4B706A', '#224B45'],
     ['', '#EDBB99', '#DC7633', '#784212'],
     ['', '#D2B4DE', '#BB8FCE', '#6A5ACD'],
-    ['', '#A9DFBF', '#27AE60', '#1E8449'],
+    ['', '#D8C0A9', '#B2927C', '#7E6754'],
+    ['', '#D3D3D3', '#A9A9A9', '#808080'],
   ];
 
   public processName: string = '';
@@ -37,6 +35,8 @@ export class CreateProcessComponent implements OnInit {
   public NumberTemp1: number = 0;
   public NumberTemp2: number = 0;
   public NumberTemp3: number = 0;
+
+  public
 
   public tableMemoryTemp: any = [
     ['00000', '', ''],
