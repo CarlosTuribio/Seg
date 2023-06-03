@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-create-process',
   templateUrl: './create-process.component.html',
-  styleUrls: ['./create-process.component.scss'],
+  styleUrls: ['./create-process.component.scss', '/custom.css',],
 })
 export class CreateProcessComponent implements OnInit {
   
