@@ -8,7 +8,7 @@
     flex-wrap: nowrap;
   }
   
-  .center[_ngcontent-wyf-c1] {
+  .center{
     width: 75%;
     display: flex;
     flex-wrap: wrap;
