@@ -708,7 +708,7 @@ export class CreateProcessComponent implements OnInit {
         break;
       case 4:
         this.popTitle = 'Gerenciamento de Memória com Segmentação';
-        this.popMessage = 'O gerenciamento de memória de thread é uma técnica usada por sistemas operacionais para organizar e alocar memória com mais eficiência. Esse método divide o espaço de endereço em segmentos lógicos, cada um correspondendo a uma parte lógica ou funcional do programa ou processo. Cada segmento tem um tamanho e um endereço base. Quando um programa é executado, seus segmentos são alocados em regiões de memória física conforme necessário. Isso permite um mapeamento mais flexível e modular, pois cada segmento pode ser tratado de forma independente, facilitando o compartilhamento de dados e protegendo a memória entre os processos.';
+        this.popMessage = 'O gerenciamento de memória por segmentação é uma técnica usada por sistemas operacionais para organizar e alocar memória com mais eficiência. Esse método divide o espaço de endereço em segmentos lógicos, cada um correspondendo a uma parte lógica ou funcional do programa ou processo. Cada segmento tem um tamanho e um endereço base. Quando um programa é executado, seus segmentos são alocados em regiões de memória física conforme necessário. Isso permite um mapeamento mais flexível e modular, pois cada segmento pode ser tratado de forma independente, facilitando o compartilhamento de dados e protegendo a memória entre os processos.';
         break;
       case 5:
         this.popTitle = 'Memória Lógica';
@@ -720,7 +720,7 @@ export class CreateProcessComponent implements OnInit {
         break;
       case 7:
         this.popTitle = 'Memória Física';
-        this.popMessage = 'A memória física é a parte real da memória do sistema na qual os threads do processo são armazenados. Isso dá ao processador acesso direto e rápido a dados e instruções. A alocação eficiente de segmentos na memória física requer garantir que não haja sobreposição entre os segmentos e otimizar a configuração para minimizar a fragmentação. Isso permite que os processos acessem segmentos de memória de forma rápida e contínua, contribuindo para um desempenho eficiente do sistema. ';
+        this.popMessage = 'A memória física é a parte real da memória do sistema na qual os segmentos do processo são armazenados. Isso dá ao processador acesso direto e rápido a dados e instruções. A alocação eficiente de segmentos na memória física requer garantir que não haja sobreposição entre os segmentos e otimizar a configuração para minimizar a fragmentação. Isso permite que os processos acessem segmentos de memória de forma rápida e contínua, contribuindo para um desempenho eficiente do sistema. ';
         break;
     }
     let element = document.getElementById('popup');
