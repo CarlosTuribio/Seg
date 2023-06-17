@@ -134,6 +134,8 @@ export class CreateProcessComponent implements OnInit {
           data: this.tables(),
         });
         this.countProcess++;
+        await this.sleep(1);
+        this.showProcess(this.processName);
         this.resetFields();
       } else {
         this.showPopup(1);
@@ -145,6 +147,10 @@ export class CreateProcessComponent implements OnInit {
         this.showPopup(3);
       }
     }
+  }
+
+  public sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   public async criar(processName: string) {

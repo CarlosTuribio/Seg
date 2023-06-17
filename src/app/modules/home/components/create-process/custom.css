@@ -214,3 +214,8 @@
   }
 
 }
+
+.btn-secondary {
+  --bs-btn-hover-bg: #292e31;
+  --bs-btn-active-bg: #292e31;
+}
