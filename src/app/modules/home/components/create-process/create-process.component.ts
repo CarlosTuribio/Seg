@@ -708,19 +708,19 @@ export class CreateProcessComponent implements OnInit {
         break;
       case 4:
         this.popTitle = 'Gerenciamento de Memória com Segmentação';
-        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        this.popMessage = 'O gerenciamento de memória de thread é uma técnica usada por sistemas operacionais para organizar e alocar memória com mais eficiência. Esse método divide o espaço de endereço em segmentos lógicos, cada um correspondendo a uma parte lógica ou funcional do programa ou processo. Cada segmento tem um tamanho e um endereço base. Quando um programa é executado, seus segmentos são alocados em regiões de memória física conforme necessário. Isso permite um mapeamento mais flexível e modular, pois cada segmento pode ser tratado de forma independente, facilitando o compartilhamento de dados e protegendo a memória entre os processos.';
         break;
       case 5:
         this.popTitle = 'Memória Lógica';
-        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        this.popMessage = 'A memória lógica refere-se a uma visão abstrata e virtual da memória que cada processo possui. Cada processo possui sua própria memória lógica dividida em segmentos ou partes lógicas como código, dados e pilha. Esses segmentos são identificados por endereços lógicos ou virtuais usados ​​por processos para acessar e manipular dados armazenados na memória. Com a memória lógica, um processo pode ter a ilusão de ter uma memória consistente e exclusiva, independentemente de como sua memória física está organizada. Durante a execução do programa, o sistema operacional é responsável por traduzir endereços lógicos em endereços físicos correspondentes, usando técnicas como tabelas de páginas e tabelas de segmentos, para que os processos possam alocar e acessar os recursos de memória corretamente. ';
         break;
       case 6:
         this.popTitle = 'Tabela de Segmentos';
-        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        this.popMessage = 'Uma tabela de segmentos é uma estrutura de dados usada no gerenciamento de memória segmentada. Sua finalidade é rastrear os segmentos do processo que existem na memória e registrar informações como endereço base, tamanho e status de cada segmento. Por meio dessa tabela, o sistema operacional pode realizar consultas, operações de alocação e desalocação de segmentos, além de garantir a integridade e o uso correto da memória. A tabela de segmentos é importante para que o sistema operacional mapeie e acesse os segmentos do processo com eficiência e forneça um ambiente de execução seguro e organizado. Isso dá ao processador acesso direto e rápido a dados e instruções.';
         break;
       case 7:
         this.popTitle = 'Memória Física';
-        this.popMessage = 'Lorem ipsum dolor sit amet. Sit ullam obcaecati hic officia voluptatem aut dolore consequuntur est laborum voluptas hic voluptatem architecto non voluptatem obcaecati. Id unde omnis est voluptatem soluta rem autem porro! Qui ipsa minima in officia dolore non eveniet vero et voluptatem perferendis est impedit omnis ad tempore consectetur aut ipsam sunt.';
+        this.popMessage = 'A memória física é a parte real da memória do sistema na qual os threads do processo são armazenados. Isso dá ao processador acesso direto e rápido a dados e instruções. A alocação eficiente de segmentos na memória física requer garantir que não haja sobreposição entre os segmentos e otimizar a configuração para minimizar a fragmentação. Isso permite que os processos acessem segmentos de memória de forma rápida e contínua, contribuindo para um desempenho eficiente do sistema. ';
         break;
     }
     let element = document.getElementById('popup');
